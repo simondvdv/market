@@ -112,3 +112,4 @@ while command != 'end':
             shop_helper()
         case _:
             print('Такой команды нет')
+
