@@ -1,4 +1,4 @@
-def price_list_view(price_list):
+def price_list_view(price_list):  # Список товаров в магазине
     print('\nСписок товаров:\n--------------------')
     counter = 0
     for key, value in price_list.items():
@@ -7,28 +7,20 @@ def price_list_view(price_list):
         print('--------------------')
 
 
-def cart_list_view(price_list):
+def cart_list_view(price_list):  # Список товаров в корзине
     print('\nСписок товаров:\n--------------------')
     counter = 0
     for key, value in price_list.items():
+        if value == 0:
+            continue
         counter += 1
-        print(f'{counter}. {key} - {value}р.')
+        print(f'{counter}. {key} x {value} - {value * price_dict[key]}р')
         print('--------------------')
 
-def shopping_cart_add():
+
+def shopping_cart_add():  # Ввод товара
     product = input('\nВведите название товара:\n').title()
     return product
-
-
-def shop_request_check(shop_request):
-    pass
-
-
-def did_i_nave_this(key, product):
-    if key in product.keys():
-        return 1
-    else:
-        return 0
 
 
 price_dict = {'Карандаш': 50, 'Ручка': 75.5, 'Пачка бумаги': 389.9, 'Линейка': 25.85}
@@ -38,17 +30,22 @@ while command != 'end':
 
     task = input('Введите команду:\n').lower()
     match task:
-        case 'add':
+        case 'add':  # Не смог это поместить в фукнцию, оставил в теле программы
             while True:
                 try:
                     key_ = shopping_cart_add()
-                    product_cart[key_] += did_i_nave_this(key_, product_cart)
-                    break
+                    product_cart[key_] += 1
+                    add_flag = input('Добавить ещё товар?:\nДа - добавить товар\n "любая команда" - вернутся в меню\n"')
+                    if add_flag.lower() == 'да':
+                        continue
+                    else:
+                        break
                 except KeyError:
                     print('Такого товара нет, попробуйте ещё раз')
                     continue
         case 'del':
-            print('del')
+            product_cart.clear()
+            print('Корзина очищена')
         case 'view':
             price_list_view(price_dict)
         case 'remove':
