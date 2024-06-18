@@ -46,7 +46,12 @@ def galya_otmena(cart_dict):
 
 
 def product_discount(cart_dict):
-    pass
+    if cart_summator(cart_dict) >= 5000:
+        print(f'Стоимость вашей покупки {cart_summator(cart_dict)}'
+              f'с учетом скидки {round(cart_summator(cart_dict) * 0.9, 2)}')
+    else:
+        print(f'Стоимость вашей покупки {cart_summator(cart_dict)} '
+              f'до 10% скидки не хватает {5000 - cart_summator(cart_dict)}')
 
 
 def shop_helper():
@@ -63,11 +68,26 @@ def cart_summator(cart_dict):
     return summator
 
 
-price_dict = {'Карандаш': 50, 'Ручка': 75.5, 'Пачка бумаги': 389.9, 'Линейка': 25.85}
-product_cart = {'Карандаш': 0, 'Ручка': 0, 'Пачка бумаги': 0, 'Линейка': 0}
+def check_print(cart_dict):
+    print('\nСписок товаров:\n--------------------')
+    counter = 0
+    for key, value in cart_dict.items():
+        if value == 0:
+            continue
+        counter += 1
+        print(f'{counter}. {key} x {value} - {value * price_dict[key]}р')
+        print('--------------------')
+    if cart_summator(cart_dict) >= 5000:
+        print(f'Итог: {round(cart_summator(cart_dict), 2)}')
+    else:
+        print(f'Итог: {cart_summator(cart_dict)}')
+
+
+price_dict = {'Карандаш': 500, 'Ручка': 775.5, 'Пачка Бумаги': 3389.9, 'Линейка': 250.85}
+product_cart = {'Карандаш': 0, 'Ручка': 0, 'Пачка Бумаги': 0, 'Линейка': 0}
 command = ''
+shop_helper()
 while command != 'end':
-    shop_helper()
     task = input('Введите команду:\n').lower()
     match task:
         case 'add':
@@ -83,7 +103,10 @@ while command != 'end':
             cart_list_view(product_cart)
         case 'end':
             product_discount(product_cart)
-            print(cart_summator(product_cart))
+            continue_question = input('Продолжить покупки? да/нет\n')
+            if continue_question.lower() == 'да':
+                continue
+            check_print(product_cart)
             break
         case 'help':
             shop_helper()
